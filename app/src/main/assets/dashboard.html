@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Monitoramento</title>
+    <style>
+        :root {
+            --bg-main: #0B0F19;
+            --bg-card: #151D30;
+            --bg-hover: #1E2942;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --primary: #6366F1;
+            --primary-light: #818CF8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --border-color: #242F4D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-title h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+        }
+
+        .header-title p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-hover);
+        }
+
+        .btn-danger {
+            background: transparent;
+            border: 1.5px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Grid de Mini Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-card .title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-card .value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-card.primary .value { color: var(--primary-light); }
+        .metric-card.success .value { color: var(--success); }
+        .metric-card.danger .value { color: var(--danger); }
+        .metric-card.warning .value { color: var(--warning); }
+
+        /* Grid dos Gráficos */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .charts-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .chart-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .chart-card h2 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        /* Custom SVG Charts */
+        .donut-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            height: 140px;
+        }
+
+        .donut-svg {
+            transform: rotate(-90deg);
+            width: 100px;
+            height: 100px;
+        }
+
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.75rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+
+        /* Bar Chart */
+        .bar-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 140px;
+            padding-top: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .bar-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 20%;
+            height: 100%;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .bar {
+            width: 100%;
+            border-radius: 6px 6px 0 0;
+            background: linear-gradient(to top, var(--primary), var(--primary-light));
+            min-height: 4px;
+            transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .bar-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .bar-value {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        /* Tabela de Logs */
+        .logs-section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .logs-header h2 {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .logs-list {
+            max-height: 250px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+        }
+
+        /* Custom scrollbar */
+        .logs-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .logs-list::-webkit-scrollbar-track {
+            background: var(--bg-card);
+        }
+        .logs-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 2px;
+        }
+
+        .log-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .log-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-time {
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+        }
+
+        .log-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .tag-system { background-color: rgba(148, 163, 184, 0.15); color: #CBD5E1; }
+        .tag-network { background-color: rgba(99, 102, 241, 0.15); color: #A5B4FC; }
+        .tag-upload { background-color: rgba(16, 185, 129, 0.15); color: #6EE7B7; }
+        .tag-error { background-color: rgba(239, 68, 68, 0.15); color: #FCA5A5; }
+
+        .log-msg {
+            color: var(--text-primary);
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .actions-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .actions-footer .btn {
+            flex: 1;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <h1 id="titleText">Painel de Monitoramento</h1>
+            <p>Estatísticas offline e logs em tempo real</p>
+        </div>
+        <button class="btn btn-outline" onclick="closeDashboard()">
+            Voltar
+        </button>
+    </header>
+
+    <!-- Grid de Métricas -->
+    <div class="metrics-grid">
+        <div class="metric-card primary">
+            <span class="title">Total Eventos</span>
+            <span class="value" id="valTotal">0</span>
+        </div>
+        <div class="metric-card success">
+            <span class="title">Uploads</span>
+            <span class="value" id="valUploads">0</span>
+        </div>
+        <div class="metric-card danger">
+            <span class="title">Erros</span>
+            <span class="value" id="valErrors">0</span>
+        </div>
+        <div class="metric-card warning">
+            <span class="title">Rede / Sist</span>
+            <span class="value" id="valSystem">0</span>
+        </div>
+    </div>
+
+    <!-- Grid de Gráficos -->
+    <div class="charts-grid">
+        <!-- Gráfico de Donut -->
+        <div class="chart-card">
+            <h2>Distribuição de Eventos</h2>
+            <div class="donut-container">
+                <svg class="donut-svg" viewBox="0 0 32 32">
+                    <!-- Fundo do circulo -->
+                    <circle cx="16" cy="16" r="14" fill="transparent" stroke="#1E293B" stroke-width="4"></circle>
+                    <!-- Segmentos dinâmicos inseridos via JS -->
+                    <g id="donutSegments"></g>
+                </svg>
+                <div class="donut-legend" id="donutLegend">
+                    <!-- Legenda dinêmica -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de Barras -->
+        <div class="chart-card">
+            <h2>Volumetria de Logs por Categoria</h2>
+            <div class="bar-container">
+                <div class="bar-column">
+                    <span class="bar-value" id="barValUpload">0</span>
+                    <div class="bar" id="barUpload" style="background: linear-gradient(to top, var(--success), #34D399); height: 0%;"></div>
+                    <span class="bar-label">Upload</span>
+                </div>
+                <div class="bar-column">
+                    <span class="bar-value" id="barValError">0</span>
+                    <div class="bar" id="barError" style="background: linear-gradient(to top, var(--danger), #F87171); height: 0%;"></div>
+                    <span class="bar-label">Erro</span>
+                </div>
+                <div class="bar-column">
+                    <span class="bar-value" id="barValNetwork">0</span>
+                    <div class="bar" id="barNetwork" style="background: linear-gradient(to top, var(--primary), var(--primary-light)); height: 0%;"></div>
+                    <span class="bar-label">Rede</span>
+                </div>
+                <div class="bar-column">
+                    <span class="bar-value" id="barValSystem">0</span>
+                    <div class="bar" id="barSystem" style="background: linear-gradient(to top, var(--text-secondary), #E2E8F0); height: 0%;"></div>
+                    <span class="bar-label">Sistema</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela / Lista de Logs -->
+    <div class="logs-section">
+        <div class="logs-header">
+            <h2>Histórico de Atividade</h2>
+            <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.75rem;" onclick="loadData()">
+                Atualizar
+            </button>
+        </div>
+        <div class="logs-list" id="logsList">
+            <!-- Linhas de log inseridas via JS -->
+        </div>
+    </div>
+
+    <!-- Botões de Ação Rodapé -->
+    <div class="actions-footer">
+        <button class="btn btn-danger" onclick="clearLogs()">
+            Limpar Todos os Logs
+        </button>
+    </div>
+
+    <script>
+        // Cores associadas a cada tipo de log
+        const COLORS = {
+            'UPLOAD': 'var(--success)',
+            'ERROR': 'var(--danger)',
+            'NETWORK': 'var(--primary)',
+            'SYSTEM': 'var(--text-secondary)'
+        };
+
+        // Verifica se a ponte do Android está ativa
+        function getBridge() {
+            if (typeof AndroidBridge !== 'undefined') {
+                return AndroidBridge;
+            }
+            // Mock de fallback para testes locais no navegador
+            return {
+                getLogs: function(limit) {
+                    return JSON.stringify([
+                        { id: 1, timestamp: "2026-07-14 14:10:12", event_type: "SYSTEM", message: "Mock: Aplicativo inicializado" },
+                        { id: 2, timestamp: "2026-07-14 14:11:05", event_type: "NETWORK", message: "Mock: Iniciando carregamento" },
+                        { id: 3, timestamp: "2026-07-14 14:11:40", event_type: "UPLOAD", message: "Mock: Selecionado 1 arquivo da Galeria" },
+                        { id: 4, timestamp: "2026-07-14 14:12:00", event_type: "ERROR", message: "Mock: Erro de rede (host desconhecido)" }
+                    ]);
+                },
+                getStats: function() {
+                    return JSON.stringify({
+                        "SYSTEM": 1,
+                        "NETWORK": 1,
+                        "UPLOAD": 1,
+                        "ERROR": 1
+                    });
+                },
+                clearLogs: function() {
+                    console.log("Mock: Limpando logs");
+                },
+                closeDashboard: function() {
+                    console.log("Mock: Fechando painel");
+                }
+            };
+        }
+
+        function closeDashboard() {
+            getBridge().closeDashboard();
+        }
+
+        function clearLogs() {
+            if (confirm("Tem certeza que deseja apagar todos os registros de monitoramento?")) {
+                getBridge().clearLogs();
+                loadData();
+            }
+        }
+
+        function loadData() {
+            try {
+                const bridge = getBridge();
+                
+                // 1. Carrega Estatísticas para os cards e gráficos
+                const statsStr = bridge.getStats();
+                const stats = JSON.parse(statsStr);
+                
+                const uploadCount = stats["UPLOAD"] || 0;
+                const errorCount = stats["ERROR"] || 0;
+                const networkCount = stats["NETWORK"] || 0;
+                const systemCount = stats["SYSTEM"] || 0;
+                const totalCount = uploadCount + errorCount + networkCount + systemCount;
+
+                // Atualiza cards numéricos
+                document.getElementById('valTotal').innerText = totalCount;
+                document.getElementById('valUploads').innerText = uploadCount;
+                document.getElementById('valErrors').innerText = errorCount;
+                document.getElementById('valSystem').innerText = networkCount + systemCount;
+
+                // Atualiza Gráfico de Barras
+                updateBarChart(uploadCount, errorCount, networkCount, systemCount, totalCount);
+
+                // Atualiza Gráfico de Donut
+                updateDonutChart(uploadCount, errorCount, networkCount, systemCount, totalCount);
+
+                // 2. Carrega logs na lista
+                const logsStr = bridge.getLogs(50);
+                const logs = JSON.parse(logsStr);
+                const logsContainer = document.getElementById('logsList');
+                
+                if (logs.length === 0) {
+                    logsContainer.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text-secondary); font-size: 0.8rem;">Nenhum registro encontrado.</div>';
+                } else {
+                    logsContainer.innerHTML = logs.map(log => {
+                        const tagClass = 'tag-' + log.event_type.toLowerCase();
+                        // Formata a data para exibir apenas HH:mm:ss se for de hoje, ou completo
+                        const displayTime = formatTimestamp(log.timestamp);
+                        return `
+                            <div class="log-row">
+                                <div class="log-meta">
+                                    <span class="log-tag ${tagClass}">${log.event_type}</span>
+                                    <span class="log-time">${displayTime}</span>
+                                </div>
+                                <div class="log-msg">${escapeHTML(log.message)}</div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch(e) {
+                console.error("Erro ao carregar dados do dashboard: " + e);
+            }
+        }
+
+        function formatTimestamp(rawTimestamp) {
+            if (!rawTimestamp) return "";
+            // O SQLite retorna o UTC timestamp: YYYY-MM-DD HH:MM:SS
+            // Queremos exibir de forma bonita: ex: 14/07 - 14:10:12
+            try {
+                const parts = rawTimestamp.split(' ');
+                if (parts.length === 2) {
+                    const dateParts = parts[0].split('-');
+                    const timeParts = parts[1].split(':');
+                    return `${dateParts[2]}/${dateParts[1]} às ${timeParts[0]}:${timeParts[1]}:${timeParts[2]}`;
+                }
+            } catch(e) {}
+            return rawTimestamp;
+        }
+
+        function escapeHTML(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function updateBarChart(upload, error, network, system, total) {
+            const max = Math.max(upload, error, network, system, 1);
+            
+            const bars = [
+                { id: 'barUpload', valId: 'barValUpload', val: upload },
+                { id: 'barError', valId: 'barValError', val: error },
+                { id: 'barNetwork', valId: 'barValNetwork', val: network },
+                { id: 'barSystem', valId: 'barValSystem', val: system }
+            ];
+
+            bars.forEach(b => {
+                const pct = (b.val / max) * 90; // Escala máxima de 90% da altura
+                document.getElementById(b.id).style.height = `${Math.max(pct, 4)}%`;
+                document.getElementById(b.valId).innerText = b.val;
+            });
+        }
+
+        function updateDonutChart(upload, error, network, system, total) {
+            const segmentsContainer = document.getElementById('donutSegments');
+            const legendContainer = document.getElementById('donutLegend');
+            
+            if (total === 0) {
+                // Desenha circulo cinza se não houver dados
+                segmentsContainer.innerHTML = `<circle cx="16" cy="16" r="14" fill="transparent" stroke="#1E293B" stroke-width="4"></circle>`;
+                legendContainer.innerHTML = '<span class="legend-item"><div class="legend-color" style="background:#1E293B"></div>Sem dados</span>';
+                return;
+            }
+
+            const data = [
+                { label: 'Upload', val: upload, color: 'var(--success)' },
+                { label: 'Erro', val: error, color: 'var(--danger)' },
+                { label: 'Rede', val: network, color: 'var(--primary)' },
+                { label: 'Sistema', val: system, color: 'var(--text-secondary)' }
+            ].filter(d => d.val > 0);
+
+            let accumulatedPercent = 0;
+            let svgContent = '';
+            let legendContent = '';
+
+            data.forEach(d => {
+                const percent = (d.val / total) * 100;
+                
+                // Raio é 14. A circunferência total é 2 * PI * r = 2 * 3.14159 * 14 = 87.964
+                const r = 14;
+                const circ = 2 * Math.PI * r; // ~87.96
+                const strokeDashArray = `${(percent / 100) * circ} ${circ}`;
+                const strokeDashOffset = -((accumulatedPercent / 100) * circ);
+
+                svgContent += `
+                    <circle 
+                        cx="16" 
+                        cy="16" 
+                        r="${r}" 
+                        fill="transparent" 
+                        stroke="${d.color}" 
+                        stroke-width="4" 
+                        stroke-dasharray="${strokeDashArray}" 
+                        stroke-dashoffset="${strokeDashOffset}"
+                        style="transition: stroke-dashoffset 0.8s ease;">
+                    </circle>
+                `;
+
+                legendContent += `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: ${d.color}"></div>
+                        <span>${d.label}: <b>${Math.round(percent)}%</b></span>
+                    </div>
+                `;
+
+                accumulatedPercent += percent;
+            });
+
+            segmentsContainer.innerHTML = svgContent;
+            legendContainer.innerHTML = legendContent;
+        }
+
+        // Executa ao carregar a página
+        window.onload = function() {
+            loadData();
+        };
+    </script>
+</body>
+</html>

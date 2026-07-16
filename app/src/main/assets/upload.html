@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Imagem</title>
+    <style>
+        :root {
+            --bg-main: #0B0F19;
+            --bg-card: #151D30;
+            --bg-hover: #1E2942;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --primary: #6366F1;
+            --primary-light: #818CF8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --border-color: #242F4D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-title h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+        }
+
+        .header-title p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-logs {
+            background: transparent;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-logs:hover { background: var(--bg-hover); }
+
+        /* ===== BADGE DE FILA ===== */
+        .queue-banner {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.05));
+            border: 1px solid rgba(99,102,241,0.35);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .queue-banner.visible { display: flex; }
+
+        .queue-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            flex-shrink: 0;
+            animation: blink 1.2s ease-in-out infinite;
+        }
+
+        .queue-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .queue-sub {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Container do Botão Central */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .capture-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .btn-capture {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .btn-capture:active { transform: scale(0.92); }
+
+        /* Botão disponível mesmo durante upload na fila */
+        .btn-capture.queue-active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            animation: pulseGreen 1.8s infinite;
+        }
+
+        .btn-capture.uploading {
+            animation: pulse 1.5s infinite;
+            background: linear-gradient(135deg, #4F46E5, #6366F1);
+        }
+
+        .btn-capture.success-state {
+            background: linear-gradient(135deg, var(--success), #34D399);
+        }
+
+        .btn-capture.error-state {
+            background: linear-gradient(135deg, var(--danger), #F87171);
+        }
+
+        .btn-capture svg {
+            width: 54px;
+            height: 54px;
+            fill: white;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-capture:hover svg { transform: scale(1.1); }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+            70% { box-shadow: 0 0 0 18px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .status-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .status-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            max-width: 280px;
+        }
+
+        .status-title.uploading { color: var(--primary-light); }
+        .status-title.success-state { color: var(--success); }
+        .status-title.error-state { color: var(--danger); }
+        .status-title.queue-active { color: var(--success); }
+
+        /* Mini contador no botão */
+        .queue-badge {
+            display: none;
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--warning);
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: 800;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg-card);
+            animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .queue-badge.visible { display: flex; }
+
+        @keyframes popIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding: 16px 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <h1>Captura de Imagem</h1>
+            <p>Upload direto para o Google Drive</p>
+        </div>
+        <button class="btn-logs" onclick="openLogs()">
+            Logs e Gráficos
+        </button>
+    </header>
+
+    <!-- Banner de Fila -->
+    <div class="queue-banner" id="queueBanner">
+        <div class="queue-dot"></div>
+        <div>
+            <div class="queue-text" id="queueText">Fotos na fila de upload</div>
+            <div class="queue-sub">Você pode continuar tirando fotos normalmente</div>
+        </div>
+    </div>
+
+    <!-- Área Central -->
+    <div class="content-area">
+        <div class="capture-card">
+            <!-- Botão de Câmera com badge de contador -->
+            <button class="btn-capture" id="btnCapture" onclick="triggerCapture()">
+                <!-- Badge contador de fila -->
+                <span class="queue-badge" id="queueBadge">0</span>
+
+                <!-- Ícone de Câmera -->
+                <svg id="iconCamera" viewBox="0 0 24 24">
+                    <path d="M4 4h3l2-3h6l2 3h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 2c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"/>
+                </svg>
+                <!-- Ícone de Uploading -->
+                <svg id="iconLoading" viewBox="0 0 24 24" style="display: none; animation: spin 1.2s linear infinite;">
+                    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm-6 8c0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v-3l4 4-4-4v3c-3.31 0-6-2.69-6-6z"/>
+                </svg>
+                <!-- Ícone de Sucesso -->
+                <svg id="iconSuccess" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                <!-- Ícone de Erro -->
+                <svg id="iconError" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+
+            <!-- Status -->
+            <div class="status-title" id="statusTitle">Pronto para Capturar</div>
+            <div class="status-desc" id="statusDesc">Toque no botão para abrir a câmera e enviar automaticamente. Pode tirar várias fotos seguidas!</div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        Conectado ao diretório seguro do Google Drive
+    </footer>
+
+    <script>
+        // Estilo de rotação do ícone de loading
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = "@keyframes spin { 100% { transform: rotate(360deg); } }";
+        document.head.appendChild(styleSheet);
+
+        let pendingCount = 0;
+        let successTimeout = null;
+
+        function getBridge() {
+            if (typeof AndroidBridge !== 'undefined') return AndroidBridge;
+            return {
+                captureAndUpload: function() {
+                    updateQueueStatus(pendingCount + 1);
+                    setTimeout(() => updateUploadStatus('uploading', 'Simulando envio...', pendingCount), 300);
+                    setTimeout(() => updateUploadStatus('success', 'Foto enviada!', 0), 2500);
+                }
+            };
+        }
+
+        function triggerCapture() {
+            getBridge().captureAndUpload();
+        }
+
+        function openLogs() {
+            window.location.href = "file:///android_asset/dashboard.html";
+        }
+
+        // Chamado pelo Android quando uma foto entra na fila (imediato, sem bloquear câmera)
+        function updateQueueStatus(pending) {
+            pendingCount = pending;
+            const badge = document.getElementById('queueBadge');
+            const banner = document.getElementById('queueBanner');
+            const queueText = document.getElementById('queueText');
+            const btn = document.getElementById('btnCapture');
+            const sTitle = document.getElementById('statusTitle');
+
+            if (pending > 0) {
+                // Mostra badge no botão
+                badge.innerText = pending;
+                badge.classList.add('visible');
+
+                // Mostra banner
+                banner.classList.add('visible');
+                queueText.innerText = pending === 1
+                    ? '1 foto aguardando upload...'
+                    : `${pending} fotos aguardando upload...`;
+
+                // Botão fica disponível mas com animação de fila ativa
+                btn.className = 'btn-capture queue-active';
+                showIcon('iconCamera');
+                sTitle.className = 'status-title queue-active';
+                sTitle.innerText = 'Pode Tirar a Próxima!';
+                document.getElementById('statusDesc').innerText =
+                    `${pending} foto(s) na fila. Continue tirando fotos enquanto fazemos o upload!`;
+            } else {
+                badge.classList.remove('visible');
+                banner.classList.remove('visible');
+            }
+        }
+
+        // Chamado pelo Android com atualizações de progresso/resultado
+        function updateUploadStatus(state, message, pending) {
+            if (pending !== undefined) pendingCount = pending;
+
+            const btn = document.getElementById('btnCapture');
+            const sTitle = document.getElementById('statusTitle');
+            const sDesc = document.getElementById('statusDesc');
+            const badge = document.getElementById('queueBadge');
+            const banner = document.getElementById('queueBanner');
+
+            // Atualiza badge
+            if (pendingCount > 0) {
+                badge.innerText = pendingCount;
+                badge.classList.add('visible');
+                banner.classList.add('visible');
+                document.getElementById('queueText').innerText =
+                    pendingCount === 1 ? '1 foto aguardando...' : `${pendingCount} fotos aguardando...`;
+            } else {
+                badge.classList.remove('visible');
+                banner.classList.remove('visible');
+            }
+
+            if (successTimeout) { clearTimeout(successTimeout); successTimeout = null; }
+
+            if (state === 'uploading') {
+                btn.className = 'btn-capture uploading';
+                sTitle.className = 'status-title uploading';
+                showIcon('iconLoading');
+                sTitle.innerText = pendingCount > 0 ? `Enviando... (${pendingCount} na fila)` : 'Enviando Foto...';
+                sDesc.innerText = message;
+
+            } else if (state === 'success') {
+                if (pendingCount > 0) {
+                    // Ainda há fotos na fila — não resetar, apenas confirmar e manter fila
+                    btn.className = 'btn-capture queue-active';
+                    sTitle.className = 'status-title queue-active';
+                    showIcon('iconCamera');
+                    sTitle.innerText = 'Foto Enviada! ✓';
+                    sDesc.innerText = message + ` | ${pendingCount} foto(s) restante(s) na fila.`;
+                } else {
+                    // Fila zerada — celebra!
+                    btn.className = 'btn-capture success-state';
+                    sTitle.className = 'status-title success-state';
+                    showIcon('iconSuccess');
+                    sTitle.innerText = 'Tudo Enviado! ✓';
+                    sDesc.innerText = message || 'Todas as fotos foram salvas no Google Drive.';
+                    successTimeout = setTimeout(resetState, 5000);
+                }
+
+            } else if (state === 'error') {
+                btn.className = pendingCount > 0 ? 'btn-capture queue-active' : 'btn-capture error-state';
+                sTitle.className = pendingCount > 0 ? 'status-title queue-active' : 'status-title error-state';
+                showIcon(pendingCount > 0 ? 'iconCamera' : 'iconError');
+                sTitle.innerText = pendingCount > 0 ? 'Erro em 1 foto' : 'Erro no Envio';
+                sDesc.innerText = message || 'Falha no upload. Verifique a rede e tente novamente.';
+                if (pendingCount === 0) {
+                    successTimeout = setTimeout(resetState, 6000);
+                }
+            }
+        }
+
+        function showIcon(id) {
+            ['iconCamera', 'iconLoading', 'iconSuccess', 'iconError'].forEach(i => {
+                document.getElementById(i).style.display = i === id ? 'block' : 'none';
+            });
+        }
+
+        function resetState() {
+            pendingCount = 0;
+            const btn = document.getElementById('btnCapture');
+            btn.className = 'btn-capture';
+            showIcon('iconCamera');
+
+            const sTitle = document.getElementById('statusTitle');
+            sTitle.className = 'status-title';
+            sTitle.innerText = 'Pronto para Capturar';
+            document.getElementById('statusDesc').innerText =
+                'Toque no botão para abrir a câmera e enviar automaticamente. Pode tirar várias fotos seguidas!';
+
+            document.getElementById('queueBadge').classList.remove('visible');
+            document.getElementById('queueBanner').classList.remove('visible');
+        }
+    </script>
+</body>
+</html>

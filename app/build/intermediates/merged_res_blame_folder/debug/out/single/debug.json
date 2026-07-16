@@ -1,0 +1,66 @@
+[
+    {
+        "merged": "com.example.upimagens.app-merged_res-4:/layout_activity_main.xml.flat",
+        "source": "com.example.upimagens.app-main-6:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_btn_icon_overlay.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\btn_icon_overlay.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_shutter_ring.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\shutter_ring.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_ic_offline.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\ic_offline.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\xml_file_paths.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\xml\\file_paths.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_gradient_bottom.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\gradient_bottom.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_queue_banner_bg.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\queue_banner_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_ic_dashboard.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\ic_dashboard.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_btn_gradient.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\btn_gradient.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_btn_outline.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\btn_outline.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_ic_close.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\ic_close.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_shutter_button.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\shutter_button.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_badge_bg.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\badge_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_dot_pulse.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\dot_pulse.xml"
+    },
+    {
+        "merged": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-merged_res-4:\\drawable_gradient_top.xml.flat",
+        "source": "C:\\Users\\marke\\.gradle\\daemon\\8.9\\com.example.upimagens.app-main-6:\\drawable\\gradient_top.xml"
+    }
+]

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Mapeia a pasta interna do app (getFilesDir()) — usada para salvar as fotos -->
+    <files-path name="my_images_files" path="." />
+    <!-- Mapeia a pasta de cache interna do app (getCacheDir()) -->
+    <cache-path name="my_images" path="." />
+    <!-- Mapeia a pasta de cache externa do app (getExternalCacheDir()) -->
+    <external-cache-path name="my_images_external" path="." />
+</paths>
