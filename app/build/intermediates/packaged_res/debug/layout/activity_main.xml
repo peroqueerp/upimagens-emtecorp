@@ -374,14 +374,13 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDismissSyncError"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_outline"
-            app:backgroundTint="#FFFFFF"
-            android:text="Entendi"
+            android:layout_height="60dp"
+            android:background="@drawable/btn_white_solid"
+            app:backgroundTint="@null"
+            android:text="ENTENDI"
             android:textColor="#DC2626"
             android:textStyle="bold"
-            android:textAllCaps="false"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

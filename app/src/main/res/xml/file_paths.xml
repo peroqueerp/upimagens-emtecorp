@@ -6,4 +6,6 @@
     <cache-path name="my_images" path="." />
     <!-- Mapeia a pasta de cache externa do app (getExternalCacheDir()) -->
     <external-cache-path name="my_images_external" path="." />
+    <!-- Mapeia a pasta de downloads externa do app para o atualizador OTA -->
+    <external-files-path name="my_downloads" path="Download" />
 </paths>

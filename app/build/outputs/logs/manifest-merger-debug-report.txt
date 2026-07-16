@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:2:1-53:12
-INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:2:1-53:12
-INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:2:1-53:12
-INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:2:1-53:12
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:2:1-55:12
+INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:2:1-55:12
+INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:2:1-55:12
+INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:2:1-55:12
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\marke\.gradle\caches\8.9\transforms\af9a0dc8d3ffb8a3a826f5414110f769\transformed\material-1.11.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\marke\.gradle\caches\8.9\transforms\752d0b8bd3547703b56f08940949c31c\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.camera:camera-video:1.3.1] C:\Users\marke\.gradle\caches\8.9\transforms\a185245a0369844fdb98c30be02a9465\transformed\jetified-camera-video-1.3.1\AndroidManifest.xml:2:1-7:12
@@ -85,23 +85,27 @@ ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:10:5-108
 		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:10:79-105
 	android:name
 		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:10:22-78
+uses-permission#android.permission.REQUEST_INSTALL_PACKAGES
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:12:5-83
+	android:name
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:12:22-80
 uses-feature#android.hardware.camera.any
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:13:5-15:36
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:15:5-17:36
 	android:required
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:15:9-33
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:17:9-33
 	android:name
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:14:9-51
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:16:9-51
 queries
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:18:5-22:15
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:20:5-24:15
 intent#action:name:android.media.action.IMAGE_CAPTURE
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:19:9-21:18
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:21:9-23:18
 action#android.media.action.IMAGE_CAPTURE
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:20:13-73
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:22:13-73
 	android:name
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:20:21-70
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:22:21-70
 application
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:24:5-51:19
-INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:24:5-51:19
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:26:5-53:19
+INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:26:5-53:19
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\marke\.gradle\caches\8.9\transforms\af9a0dc8d3ffb8a3a826f5414110f769\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\marke\.gradle\caches\8.9\transforms\af9a0dc8d3ffb8a3a826f5414110f769\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\marke\.gradle\caches\8.9\transforms\752d0b8bd3547703b56f08940949c31c\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
@@ -127,49 +131,49 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\marke\.gradle\cach
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\marke\.gradle\caches\8.9\transforms\7066eb93bc0f412ada0c124253e67c33\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:27:9-35
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:29:9-35
 	android:label
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:26:9-34
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:28:9-34
 	tools:targetApi
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:29:9-29
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:31:9-29
 	android:allowBackup
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:25:9-35
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:27:9-35
 	android:theme
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:28:9-65
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:30:9-65
 activity#com.example.upimagens.MainActivity
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:31:9-39:20
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:33:9-41:20
 	android:exported
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:33:13-36
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:35:13-36
 	android:configChanges
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:34:13-74
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:36:13-74
 	android:name
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:32:13-41
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:34:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:35:13-38:29
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:37:13-40:29
 action#android.intent.action.MAIN
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:36:17-69
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:38:17-69
 	android:name
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:36:25-66
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:38:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:37:17-77
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:39:17-77
 	android:name
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:37:27-74
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:39:27-74
 provider#androidx.core.content.FileProvider
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:42:9-50:20
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:44:9-52:20
 	android:grantUriPermissions
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:46:13-47
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:48:13-47
 	android:authorities
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:44:13-69
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:46:13-69
 	android:exported
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:45:13-37
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:47:13-37
 	android:name
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:43:13-62
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:45:13-62
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:47:13-49:54
+ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:49:13-51:54
 	android:resource
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:49:17-51
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:51:17-51
 	android:name
-		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:48:17-67
+		ADDED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml:50:17-67
 uses-sdk
 INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Projetos\UPImagens\app\src\main\AndroidManifest.xml

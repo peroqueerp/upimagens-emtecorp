@@ -4,6 +4,7 @@ drawable badge_bg
 drawable btn_gradient
 drawable btn_icon_overlay
 drawable btn_outline
+drawable btn_white_solid
 drawable dot_pulse
 drawable gradient_bottom
 drawable gradient_top

@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     // ===== Estado =====
     private lateinit var dbHelper: LogDatabaseHelper
     private var isDashboardOpen = false
+    private var downloadReceiver: android.content.BroadcastReceiver? = null
 
     // ===== CameraX =====
     private var imageCapture: ImageCapture? = null
@@ -115,11 +116,13 @@ class MainActivity : AppCompatActivity() {
         setupListeners()
         setupOnBackPressed()
         checkCameraPermissionAndStart()
+        setupUpdateManager()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         uploadExecutor.shutdown()
+        downloadReceiver?.let { unregisterReceiver(it) }
     }
 
     // =========================================================
@@ -505,6 +508,59 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 dbHelper.log("ERROR", "Falha ao reportar erro ao backend: ${e.message}")
             }
+        }
+    }
+
+    // =========================================================
+    //  OTA UPDATER
+    // =========================================================
+
+    private fun setupUpdateManager() {
+        downloadReceiver = object : android.content.BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: android.content.Intent) {
+                val action = intent.action
+                if (android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE == action) {
+                    val downloadId = intent.getLongExtra(android.app.DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+                    val query = android.app.DownloadManager.Query()
+                    query.setFilterById(downloadId)
+                    val cursor = (context.getSystemService(Context.DOWNLOAD_SERVICE) as android.app.DownloadManager).query(query)
+                    if (cursor.moveToFirst()) {
+                        val statusIndex = cursor.getColumnIndex(android.app.DownloadManager.COLUMN_STATUS)
+                        if (statusIndex != -1) {
+                            val status = cursor.getInt(statusIndex)
+                            if (status == android.app.DownloadManager.STATUS_SUCCESSFUL) {
+                                promptInstall(context)
+                            }
+                        }
+                    }
+                    cursor.close()
+                }
+            }
+        }
+        val filter = android.content.IntentFilter(android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(downloadReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(downloadReceiver, filter)
+        }
+        
+        UpdateManager(this).checkForUpdate()
+    }
+
+    private fun promptInstall(context: Context) {
+        try {
+            val file = java.io.File(context.getExternalFilesDir(android.os.Environment.DIRECTORY_DOWNLOADS), "upimagens_update.apk")
+            if (file.exists()) {
+                val uri = androidx.core.content.FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                val installIntent = android.content.Intent(android.content.Intent.ACTION_VIEW)
+                installIntent.setDataAndType(uri, "application/vnd.android.package-archive")
+                installIntent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+                installIntent.addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                context.startActivity(installIntent)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            android.widget.Toast.makeText(context, "Erro ao abrir instalador da atualização.", android.widget.Toast.LENGTH_LONG).show()
         }
     }
 
